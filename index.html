@@ -111,10 +111,12 @@
   .question-wrap{display:flex;flex-direction:column;gap:30px;align-items:center;width:100%;}
   .question-text{font-size:clamp(1.1rem,5.2vw,1.45rem);max-width:30ch;}
 
+  .interlude-emoji{font-size:4.6rem;line-height:1;}
+
   /* Loading */
   .loading-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;}
   .loading-icon{font-size:4.6rem;line-height:1;display:inline-block;animation:rev .6s ease-in-out infinite;}
-  .loading-icon-img{width:130px;height:130px;object-fit:contain;filter:drop-shadow(0 10px 18px var(--shadow));}
+  .loading-icon-img{width:190px;height:190px;object-fit:contain;filter:drop-shadow(0 10px 18px var(--shadow));}
   @keyframes rev{0%,100%{transform:rotate(-4deg) scale(1);}50%{transform:rotate(4deg) scale(1.06);}}
   @media (prefers-reduced-motion: reduce){ .loading-icon{animation:none;} }
   .loading-label{color:var(--ink-soft);font-weight:700;min-height:1.4em;}
@@ -237,11 +239,11 @@
     photo: "paar.jpg", // z.B. "paar.jpg" — Datei neben index.html legen, max. ~300 KB
 
     greetingTitle: "Herzlichen Glückwunsch zur Hochzeit!",
-    greetingText: "Was für ein wunderschöner Tag, danke dass wir dabei sein durften! Bevor ihr euch zurücklehnt und entspannt, hier eine kleine Überraschung von uns – schaut sie euch am besten zusammen an.",
-    startButton: "Überraschung hochfahren",
+    greetingText: "Was für ein wunderschöner Tag, danke dass wir dabei sein durften! Bevor ihr euch zurücklehnt und entspannt, hier eine kleine Überraschung von uns – schaut sie euch am besten zusammen an. <br> P.S.: Für mehr Spaß darf auch mal falsch geantwortet werden ;) ",
+    startButton: "Überraschung Starten",
 
-    loadingIcon: "", // optional eigenes Icon/Bild (z.B. "tuono.png"), sonst Standard-Emoji 🏍️
-    loadingMessages: ["Tuono V4 wird gestartet …", "Kupplung kommt …", "V4 Donner ertönt…"],
+    loadingIcon: "tuono.png", // optional eigenes Icon/Bild (z.B. "tuono.png"), sonst Standard-Emoji 🏍️
+    loadingMessages: ["Tuono V4 wird gestartet …", "Gang einlegen …", "V4 Donner ertönt…"],
 
     acts: [
       {
@@ -265,9 +267,9 @@
           },
           {
             type: "doubleyes",
-            q: "Ist es absolut sinnvoll und vernünftig mehrere Fahrzeuge – insbesondere (Rennstrecken-)Motorräder – zu besitzen?",
-            answers: ["Ja", "Ja, natürlich"],
-            reactions: ["Korrekte Einstellung.", "Noch korrekter."]
+            q: "Ist es absolut sinnvoll und vernünftig mehrere Kraftfahrzeuge – insbesondere (Rennstrecken-)Motorräder – zu besitzen?",
+            answers: ["Ja", "Ja"],
+            reactions: ["Korrekt", "Korrekt."]
           },
           {
             type: "lie",
@@ -284,6 +286,13 @@
           title: "Der BBQ-Abend",
           text: "Ihr sucht euch ein BBQ-Restaurant eurer Wahl aus (z. B. Guller BBQ) – wir laden euch ein.",
           details: "50 € Einladung, Termin & Location nach eurer Wahl."
+        },
+        // optionales Zwischenfenster nach dem Geschenk (Feld löschen = kein Zwischenfenster)
+        interlude: {
+          emoji: "😏",
+          title: "Ihr dachtet, das war's schon?",
+          text: "Nix da! Es gibt noch ein zweites Geschenk. Aber erst die nächste Frage.",
+          button: "Okay, weiter"
         }
       },
       {
@@ -304,13 +313,13 @@
                 emoji: "🏁",
                 title: "Retro Classics Stuttgart",
                 date: "29. April – 2. Mai 2027",
-                details: "Eintritt, Verpflegung, Betreuung durch geschultes Aufsichtspersonal"
+                details: "Eintritt, Verpflegung, Betreuung durch geschultes Aufsichtspersonal(Ruben)"
               },
               {
                 emoji: "🚗",
                 title: "Tuning World Bodensee",
                 date: "6. – 9. Mai 2027",
-                details: "Mobilitätsservice inkl. Lunchpaket, Eintritt, Betreuung durch geschultes Aufsichtspersonal"
+                details: "Mobilitätsservice inkl. Lunchpaket, Eintritt, Betreuung durch geschultes Aufsichtspersonal (Ruben&Lena)"
               }
             ]
           }
@@ -323,13 +332,13 @@
 
     recapTitle: "Eure Geschenke",
     redeemHint: "Einfach bei mir melden, dann machen wir einen Termin aus.",
-    closing: "Alles Liebe, euer Ruben & Lena",
+    closing: "Danke für eure Freundschaft ♥ <br> Alles Liebe, euer Ruben & Lena",
 
     // WhatsApp-Button auf der Abschluss-Seite. Nummer im internationalen Format OHNE "+", Leerzeichen oder führende 0
     // (z.B. aus 0151 12345678 wird "4915112345678"). Leer lassen, um den Button auszublenden.
-    whatsappNumber: "",
+    whatsappNumber: "4917646664438",
     whatsappButtonText: "Jetzt Termin vereinbaren",
-    whatsappMessage: "Hey ihr Turteltauben! 🎉 Wir haben das Geschenk ausgepackt und sind startklar für BBQ 🍖 und Boxenluft 🏍️ – wann habt ihr Zeit für einen Termin?"
+    whatsappMessage: "Na du Ficker! 🎉 Wir haben das Geschenk ausgepackt, haben massiv Hunger🍖 und Bock auf geile Karren. 🏍️ – wann habt ihr Zeit? Vielen Darm. P.S.: Ich kaufe dir jetzt ein Rennstreckenmotorrad nach Wunsch! Sag mir was du willst."
   };
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -458,6 +467,7 @@
         steps.push({ type: 'question', actIndex, qIndex, q });
       });
       steps.push({ type: 'reveal', actIndex, act });
+      if(act.interlude) steps.push({ type: 'interlude', act });
     });
     steps.push({ type: 'recap' });
     return steps;
@@ -497,6 +507,7 @@
       case 'loading': return renderLoading();
       case 'question': return renderQuestion(step);
       case 'reveal': return renderReveal(step);
+      case 'interlude': return renderInterlude(step);
       case 'recap': return renderRecap();
     }
   }
@@ -606,7 +617,7 @@
     qWrap.className = 'question-wrap';
     const qText = document.createElement('p');
     qText.className = 'question-text serif';
-    qText.textContent = step.q.q;
+    qText.innerHTML = step.q.q;
     qWrap.appendChild(qText);
 
     const answerArea = document.createElement('div');
@@ -822,6 +833,26 @@
     return div;
   }
 
+  /* ---------- Zwischenfenster ---------- */
+  function renderInterlude(step){
+    const it = step.act.interlude;
+    const div = document.createElement('div');
+    div.innerHTML =
+      '<div class="interlude-emoji pop-in">'+(it.emoji || '')+'</div>' +
+      '<h2 class="serif pop-in d1">'+it.title+'</h2>' +
+      '<p class="text pop-in d2">'+(it.text || '')+'</p>' +
+      '<button class="btn btn-primary pop-in d3" id="interlude-btn">'+(it.button || 'Weiter')+'</button>';
+    const btn = div.querySelector('#interlude-btn');
+    btn.addEventListener('click', ()=>{
+      if(btn.disabled) return;
+      btn.disabled = true;
+      vibrate(18);
+      next();
+    });
+    current = { cleanup(){} };
+    return div;
+  }
+
   /* ---------- Abschluss / Recap ---------- */
   function renderRecap(){
     const div = document.createElement('div');
@@ -841,19 +872,19 @@
     if(CONFIG.redeemHint){
       const p = document.createElement('p');
       p.className = 'redeem-hint';
-      p.textContent = CONFIG.redeemHint;
+      p.innerHTML = CONFIG.redeemHint;
       wrap.appendChild(p);
     }
 
     const closing = document.createElement('p');
     closing.className = 'closing serif';
-    closing.textContent = CONFIG.closing;
+    closing.innerHTML = CONFIG.closing;
     wrap.appendChild(closing);
 
     if(CONFIG.whatsappNumber){
       const waLink = document.createElement('a');
       waLink.className = 'btn btn-primary';
-      waLink.href = 'https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(CONFIG.whatsappMessage || '');
+      waLink.href = 'https://api.whatsapp.com/send?phone=' + CONFIG.whatsappNumber + '&text=' + encodeURIComponent(CONFIG.whatsappMessage || '');
       waLink.target = '_blank';
       waLink.rel = 'noopener noreferrer';
       waLink.textContent = CONFIG.whatsappButtonText || 'Jetzt Termin vereinbaren';
